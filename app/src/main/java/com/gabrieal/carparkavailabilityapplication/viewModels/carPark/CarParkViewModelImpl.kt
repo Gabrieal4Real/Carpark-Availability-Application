@@ -15,6 +15,7 @@ class CarParkViewModelImpl @Inject constructor(private val carParkRepository: Ca
     ViewModel(), CarParkViewModel {
 
     private val carParkLiveData = MutableLiveData<CarParkAvailabilityListModel?>()
+    private val timeStampLiveData = MutableLiveData<String?>()
     private val isLoading = MutableLiveData<Boolean>()
     private val isError = MutableLiveData<ResourceError?>()
 
@@ -42,6 +43,7 @@ class CarParkViewModelImpl @Inject constructor(private val carParkRepository: Ca
             SUCCESS -> {
                 isLoading.value = false
                 carParkLiveData.value = response.data
+                timeStampLiveData.value = response.data?.items?.get(0)?.timestamp
             }
             ERROR -> {
                 isLoading.value = false
@@ -54,5 +56,9 @@ class CarParkViewModelImpl @Inject constructor(private val carParkRepository: Ca
 
     override fun observeCarParkAvailability(): LiveData<CarParkAvailabilityListModel?> {
         return carParkLiveData
+    }
+
+    override fun observeTimeStamp(): LiveData<String?> {
+        return timeStampLiveData
     }
 }

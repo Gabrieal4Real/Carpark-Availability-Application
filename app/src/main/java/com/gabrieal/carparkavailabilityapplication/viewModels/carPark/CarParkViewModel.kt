@@ -10,5 +10,6 @@ interface CarParkViewModel {
     fun observeError(): LiveData<ResourceError?>
 
     fun observeCarParkAvailability(): LiveData<CarParkAvailabilityListModel?>
+    fun observeTimeStamp(): LiveData<String?>
 
 }
