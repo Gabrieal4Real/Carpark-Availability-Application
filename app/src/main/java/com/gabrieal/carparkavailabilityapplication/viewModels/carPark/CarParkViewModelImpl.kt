@@ -49,8 +49,7 @@ class CarParkViewModelImpl @Inject constructor(private val carParkRepository: Ca
                 isLoading.value = false
                 isError.value = response.resourceError
             }
-            null -> {
-            }
+            null -> {}
         }
     }
 

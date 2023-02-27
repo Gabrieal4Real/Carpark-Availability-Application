@@ -44,7 +44,6 @@ class MainActivity : BaseActivity() {
 
     private fun onBindData() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding?.viewModel = viewModel
         binding?.lifecycleOwner = this
 
         callViewModel()
@@ -71,7 +70,7 @@ class MainActivity : BaseActivity() {
         val data = ArrayList<CarParkCategoryModel>()
         val dataItems = ArrayList<CarParkCategoryItemModel>()
         if (!results.isNullOrEmpty()) {
-            for (result in results) {
+            results.forEach { result ->
                 var totalLots = 0
                 var lotsAvailable = 0
                 result.carpark_info?.forEach {
@@ -95,9 +94,8 @@ class MainActivity : BaseActivity() {
         CategorySizeState.values().forEach { categorySizeState ->
             val carParkDataItem = ArrayList<CarParkCategoryItemModel>()
             carParkDataItem.addAll(dataItems.filter {
-                (it.totalLots!! >= CategorySizeState.getMinMaxLimit(
-                    categorySizeState.name
-                ).first && it.totalLots!! < CategorySizeState.getMinMaxLimit(categorySizeState.name).second)
+                (it.totalLots!! >= CategorySizeState.getMinMaxLimit(categorySizeState.name).first
+                        && it.totalLots!! < CategorySizeState.getMinMaxLimit(categorySizeState.name).second)
             })
             data.add(CarParkCategoryModel(categorySizeState.name, carParkDataItem))
         }
