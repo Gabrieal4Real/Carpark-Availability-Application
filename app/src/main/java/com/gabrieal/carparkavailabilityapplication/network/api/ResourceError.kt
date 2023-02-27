@@ -1,6 +1,6 @@
 package com.gabrieal.carparkavailabilityapplication.network.api
 
-import com.gabrieal.carparkavailabilityapplication.models.Error
+import com.gabrieal.carparkavailabilityapplication.models.error.Error
 
 class ResourceError {
     var errors: ArrayList<Error> = ArrayList()

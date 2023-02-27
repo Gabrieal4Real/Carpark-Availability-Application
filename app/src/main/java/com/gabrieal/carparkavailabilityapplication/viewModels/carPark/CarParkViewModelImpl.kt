@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import com.gabrieal.carparkavailabilityapplication.models.carpark.CarParkAvailabilityListModel
 import com.gabrieal.carparkavailabilityapplication.network.api.Resource
 import com.gabrieal.carparkavailabilityapplication.network.api.Resource.Status.*
 import com.gabrieal.carparkavailabilityapplication.network.api.ResourceError
@@ -13,11 +14,11 @@ import javax.inject.Inject
 class CarParkViewModelImpl @Inject constructor(private val carParkRepository: CarParkRepository) :
     ViewModel(), CarParkViewModel {
 
-    private val carParkLiveData = MutableLiveData<Any?>()
+    private val carParkLiveData = MutableLiveData<CarParkAvailabilityListModel?>()
     private val isLoading = MutableLiveData<Boolean>()
     private val isError = MutableLiveData<ResourceError?>()
 
-    private val fetchCarParkAvailabilityObserver: Observer<Resource<Any>> =
+    private val fetchCarParkAvailabilityObserver: Observer<Resource<CarParkAvailabilityListModel>> =
         Observer { t -> processMovieDetailsFetchResponse(t) }
 
     override fun getCarParkAvailability(dateTime: String) {
@@ -33,7 +34,7 @@ class CarParkViewModelImpl @Inject constructor(private val carParkRepository: Ca
         return isError
     }
 
-    private fun processMovieDetailsFetchResponse(response: Resource<Any>?) {
+    private fun processMovieDetailsFetchResponse(response: Resource<CarParkAvailabilityListModel>?) {
         when (response?.status) {
             LOADING -> {
                 isLoading.value = true
@@ -51,7 +52,7 @@ class CarParkViewModelImpl @Inject constructor(private val carParkRepository: Ca
         }
     }
 
-    override fun observeCarParkAvailability(): LiveData<Any?> {
+    override fun observeCarParkAvailability(): LiveData<CarParkAvailabilityListModel?> {
         return carParkLiveData
     }
 }
