@@ -8,19 +8,11 @@ class ResourceError {
 
     override fun toString(): String {
         if (errors.isEmpty()) {
-            return if (error_description.isNullOrEmpty().not()) {
-                error_description!!
-            } else {
-                ""
-            }
+            return if (error_description.isNullOrEmpty().not()) error_description!! else ""
         }
         var errorText = ""
         for (e in errors) {
-            if (errorText.isEmpty()) {
-                errorText = e.message
-            } else {
-                errorText = errorText + ", " + e.message
-            }
+            errorText = if (errorText.isEmpty()) e.message else errorText + ", " + e.message
         }
         return errorText
     }

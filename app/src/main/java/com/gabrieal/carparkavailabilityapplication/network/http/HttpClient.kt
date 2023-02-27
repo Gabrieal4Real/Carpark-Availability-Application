@@ -5,6 +5,5 @@ import retrofit2.Retrofit
 
 interface HttpClient {
     fun getNewApiService(): NewAPIService
-
     fun getNewRetrofit(): Retrofit
 }

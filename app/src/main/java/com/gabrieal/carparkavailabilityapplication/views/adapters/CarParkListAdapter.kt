@@ -28,19 +28,29 @@ class CarParkListAdapter(private val mList: ArrayList<CarParkCategoryModel>) :
         itemsViewModel.categoryItems?.forEach {
             if (it.totalLots == itemsViewModel.categoryItems?.first()?.totalLots) {
                 if (lowest.isNullOrEmpty()) lowest = it.carParkNumber
-                else lowest += ", " + it.carParkNumber
+                else lowest +=
+                    holder.itemView.context.getString(R.string.comma) + it.carParkNumber
             }
             if (it.totalLots == itemsViewModel.categoryItems?.last()?.totalLots) {
                 if (highest.isNullOrEmpty()) highest = it.carParkNumber
-                else highest += ", " + it.carParkNumber
+                else highest +=
+                    holder.itemView.context.getString(R.string.comma) + it.carParkNumber
             }
         }
 
         holder.tvHighestTitle.text =
-            "HIGHEST (" + itemsViewModel.categoryItems?.last()?.lotsAvailable.toString() + " lots available)"
+            holder.itemView.context.getString(
+                R.string.highest_lot_available,
+                itemsViewModel.categoryItems?.last()?.lotsAvailable
+            )
+
         holder.tvHighestDesc.text = highest
-        holder.tvLowestTitle.text =
-            "LOWEST (" + itemsViewModel.categoryItems?.first()?.lotsAvailable.toString() + " lots available)"
+
+        holder.tvLowestTitle.text = holder.itemView.context.getString(
+            R.string.lowest_lot_available,
+            itemsViewModel.categoryItems?.first()?.lotsAvailable
+        )
+
         holder.tvLowestDesc.text = lowest
     }
 

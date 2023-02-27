@@ -13,6 +13,7 @@ import com.gabrieal.carparkavailabilityapplication.models.CategorySizeState
 import com.gabrieal.carparkavailabilityapplication.models.carpark.CarParkDataItemModel
 import com.gabrieal.carparkavailabilityapplication.models.dataModels.CarParkCategoryItemModel
 import com.gabrieal.carparkavailabilityapplication.models.dataModels.CarParkCategoryModel
+import com.gabrieal.carparkavailabilityapplication.utils.Constants
 import com.gabrieal.carparkavailabilityapplication.viewModels.carPark.CarParkViewModel
 import com.gabrieal.carparkavailabilityapplication.viewModels.carPark.CarParkViewModelImpl
 import com.gabrieal.carparkavailabilityapplication.views.adapters.CarParkListAdapter
@@ -56,7 +57,7 @@ class MainActivity : BaseActivity() {
     private fun callViewModel() {
         viewModel.getCarParkAvailability(
             SimpleDateFormat(
-                "yyyy-MM-dd'T'hh:mm:ss", Locale.getDefault()
+                Constants.CONST_yyyymmddhhmmss_FORMAT, Locale.getDefault()
             ).format(Date())
         )
         loopViewModelCall()
@@ -115,7 +116,7 @@ class MainActivity : BaseActivity() {
         viewModel.observeTimeStamp().observe(this) {
             it?.let {
                 binding?.tvRefreshedAt?.text =
-                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US).parse(it)
+                    SimpleDateFormat(Constants.CONST_yyyyMMddHHmmSSXXX_FORMAT, Locale.US).parse(it)
                         ?.toLocaleString()
             }
         }
