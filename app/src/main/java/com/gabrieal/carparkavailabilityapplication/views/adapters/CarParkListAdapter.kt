@@ -1,5 +1,6 @@
 package com.gabrieal.carparkavailabilityapplication.views.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,12 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gabrieal.carparkavailabilityapplication.R
 import com.gabrieal.carparkavailabilityapplication.models.dataModels.CarParkCategoryModel
+import com.google.gson.Gson
 
-class CarParkListAdapter(private val mList: ArrayList<CarParkCategoryModel>) :
+class CarParkListAdapter(private val mList: ArrayList<CarParkCategoryModel>?) :
     RecyclerView.Adapter<CarParkListAdapter.ViewHolder>() {
-
-    var highest: String? = null
-    var lowest: String? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -22,10 +21,13 @@ class CarParkListAdapter(private val mList: ArrayList<CarParkCategoryModel>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val itemsViewModel = mList[position]
-        holder.tvCategory.text = itemsViewModel.category
+        var highest: String? = null
+        var lowest: String? = null
 
-        itemsViewModel.categoryItems?.forEach {
+        val itemsViewModel = mList?.get(position)
+        holder.tvCategory.text = itemsViewModel?.category
+
+        itemsViewModel?.categoryItems?.forEach {
             if (it.totalLots == itemsViewModel.categoryItems?.first()?.totalLots) {
                 if (lowest.isNullOrEmpty()) lowest = it.carParkNumber
                 else lowest +=
@@ -41,21 +43,21 @@ class CarParkListAdapter(private val mList: ArrayList<CarParkCategoryModel>) :
         holder.tvHighestTitle.text =
             holder.itemView.context.getString(
                 R.string.highest_lot_available,
-                itemsViewModel.categoryItems?.last()?.lotsAvailable
+                itemsViewModel?.categoryItems?.last()?.lotsAvailable
             )
 
         holder.tvHighestDesc.text = highest
 
         holder.tvLowestTitle.text = holder.itemView.context.getString(
             R.string.lowest_lot_available,
-            itemsViewModel.categoryItems?.first()?.lotsAvailable
+            itemsViewModel?.categoryItems?.first()?.lotsAvailable
         )
 
         holder.tvLowestDesc.text = lowest
     }
 
     override fun getItemCount(): Int {
-        return mList.size
+        return mList?.size ?: 0
     }
 
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
