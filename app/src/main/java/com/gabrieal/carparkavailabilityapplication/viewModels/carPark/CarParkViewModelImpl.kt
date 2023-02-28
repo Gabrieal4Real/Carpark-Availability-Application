@@ -5,16 +5,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.gabrieal.carparkavailabilityapplication.models.carpark.CarParkAvailabilityListModel
+import com.gabrieal.carparkavailabilityapplication.models.carpark.CarParkDataItemModel
 import com.gabrieal.carparkavailabilityapplication.network.api.Resource
 import com.gabrieal.carparkavailabilityapplication.network.api.Resource.Status.*
 import com.gabrieal.carparkavailabilityapplication.network.api.ResourceError
 import com.gabrieal.carparkavailabilityapplication.repository.CarParkRepository
+import com.gabrieal.carparkavailabilityapplication.utils.Constants
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class CarParkViewModelImpl @Inject constructor(private val carParkRepository: CarParkRepository) :
     ViewModel(), CarParkViewModel {
 
-    private val carParkLiveData = MutableLiveData<CarParkAvailabilityListModel?>()
+    private val carParkLiveData = MutableLiveData<List<CarParkDataItemModel>?>()
     private val timeStampLiveData = MutableLiveData<String?>()
     private val isLoading = MutableLiveData<Boolean>()
     private val isError = MutableLiveData<ResourceError?>()
@@ -42,18 +46,21 @@ class CarParkViewModelImpl @Inject constructor(private val carParkRepository: Ca
             }
             SUCCESS -> {
                 isLoading.value = false
-                carParkLiveData.value = response.data
-                timeStampLiveData.value = response.data?.items?.get(0)?.timestamp
+                carParkLiveData.value = response.data?.items?.get(0)?.carpark_data
+                timeStampLiveData.value = response.data?.items?.get(0)?.timestamp?.let {
+                    SimpleDateFormat(Constants.CONST_yyyyMMddHHmmSSXXX_FORMAT, Locale.US).parse(it)
+                        ?.toLocaleString()
+                }
             }
-            ERROR -> {
+            ERROR  -> {
                 isLoading.value = false
                 isError.value = response.resourceError
             }
-            null -> {}
+            else -> {}
         }
     }
 
-    override fun observeCarParkAvailability(): LiveData<CarParkAvailabilityListModel?> {
+    override fun observeCarParkAvailability(): LiveData<List<CarParkDataItemModel>?> {
         return carParkLiveData
     }
 

@@ -82,9 +82,7 @@ class MainActivity : BaseActivity() {
                     }
                 }
                 dataItems.add(
-                    CarParkCategoryItemModel(
-                        totalLots, result.carpark_number, lotsAvailable
-                    )
+                    CarParkCategoryItemModel(totalLots, result.carpark_number, lotsAvailable)
                 )
             }
         }
@@ -107,15 +105,13 @@ class MainActivity : BaseActivity() {
     private fun observeResponses() {
         viewModel.observeCarParkAvailability().observe(this) {
             it?.let {
-                setupAdapter(it.items?.get(0)?.carpark_data)
+                setupAdapter(it)
             }
         }
 
         viewModel.observeTimeStamp().observe(this) {
             it?.let {
-                binding?.tvRefreshedAt?.text =
-                    SimpleDateFormat(Constants.CONST_yyyyMMddHHmmSSXXX_FORMAT, Locale.US).parse(it)
-                        ?.toLocaleString()
+                binding?.tvRefreshedAt?.text = it
             }
         }
     }
