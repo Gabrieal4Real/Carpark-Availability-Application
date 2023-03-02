@@ -13,6 +13,9 @@ import com.google.gson.Gson
 class CarParkListAdapter(private val mList: ArrayList<CarParkCategoryModel>?) :
     RecyclerView.Adapter<CarParkListAdapter.ViewHolder>() {
 
+    var highest: String? = ""
+    var lowest: String? = ""
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context)
@@ -21,22 +24,20 @@ class CarParkListAdapter(private val mList: ArrayList<CarParkCategoryModel>?) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var highest: String? = null
-        var lowest: String? = null
+        highest = ""
+        lowest = ""
 
         val itemsViewModel = mList?.get(position)
         holder.tvCategory.text = itemsViewModel?.category
 
         itemsViewModel?.categoryItems?.forEach {
-            if (it.totalLots == itemsViewModel.categoryItems?.first()?.totalLots) {
-                if (lowest.isNullOrEmpty()) lowest = it.carParkNumber
-                else lowest +=
-                    holder.itemView.context.getString(R.string.comma) + it.carParkNumber
+            if (it.lotsAvailable == itemsViewModel.categoryItems?.first()?.lotsAvailable) {
+                lowest += if (lowest.isNullOrEmpty()) it.carParkNumber
+                else holder.itemView.context.getString(R.string.comma) + it.carParkNumber
             }
-            if (it.totalLots == itemsViewModel.categoryItems?.last()?.totalLots) {
-                if (highest.isNullOrEmpty()) highest = it.carParkNumber
-                else highest +=
-                    holder.itemView.context.getString(R.string.comma) + it.carParkNumber
+            if (it.lotsAvailable == itemsViewModel.categoryItems?.last()?.lotsAvailable) {
+                highest += if (highest.isNullOrEmpty()) it.carParkNumber
+                else holder.itemView.context.getString(R.string.comma) + it.carParkNumber
             }
         }
 

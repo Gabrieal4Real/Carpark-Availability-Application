@@ -87,7 +87,7 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        dataItems.sortBy { it.totalLots }
+        dataItems.sortBy { it.lotsAvailable }
 
         CategorySizeState.values().forEach { categorySizeState ->
             val carParkDataItem = ArrayList<CarParkCategoryItemModel>()
