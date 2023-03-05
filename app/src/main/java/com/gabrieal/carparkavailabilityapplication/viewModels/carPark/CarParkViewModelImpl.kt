@@ -24,7 +24,7 @@ class CarParkViewModelImpl @Inject constructor(private val carParkRepository: Ca
     private val isError = MutableLiveData<ResourceError?>()
 
     private val fetchCarParkAvailabilityObserver: Observer<Resource<CarParkAvailabilityListModel>> =
-        Observer { t -> processMovieDetailsFetchResponse(t) }
+        Observer { t -> processCarParkAvailabilityResponse(t) }
 
     override fun getCarParkAvailability(dateTime: String) {
         carParkRepository.getCarParkListFromAPI(dateTime)
@@ -39,7 +39,7 @@ class CarParkViewModelImpl @Inject constructor(private val carParkRepository: Ca
         return isError
     }
 
-    private fun processMovieDetailsFetchResponse(response: Resource<CarParkAvailabilityListModel>?) {
+    private fun processCarParkAvailabilityResponse(response: Resource<CarParkAvailabilityListModel>?) {
         when (response?.status) {
             LOADING -> {
                 isLoading.value = true
