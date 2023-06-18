@@ -11,6 +11,7 @@ https://data.gov.sg/dataset/carpark-availability?resource_id=4f4a57d1-e904-4326-
 - Retrofit 2
 - OkHttp Logging Interceptor
 - DataBinding
+- MVVM
 
 ## Notes
 - Repo runs on Android 11 Gradle JDK (Make sure to update your Android Studio to the latest version)
