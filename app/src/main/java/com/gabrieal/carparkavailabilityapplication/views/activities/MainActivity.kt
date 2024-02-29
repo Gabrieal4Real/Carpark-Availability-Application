@@ -57,11 +57,10 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupUI() {
-
+        binding?.rvCarParkList?.layoutManager = LinearLayoutManager(this)
     }
 
     private fun setupAdapter(results: List<CarParkDataItemModel>?) {
-        binding?.rvCarParkList?.layoutManager = LinearLayoutManager(this)
         val data = ArrayList<CarParkCategoryModel>()
         val dataItems = ArrayList<CarParkCategoryItemModel>()
         if (!results.isNullOrEmpty()) {
