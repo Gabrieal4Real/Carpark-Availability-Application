@@ -5,7 +5,6 @@ import android.os.Handler
 import android.os.Looper
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gabrieal.carparkavailabilityapplication.R
 import com.gabrieal.carparkavailabilityapplication.databinding.ActivityMainBinding
@@ -19,7 +18,8 @@ import com.gabrieal.carparkavailabilityapplication.viewModels.carPark.CarParkVie
 import com.gabrieal.carparkavailabilityapplication.views.adapters.CarParkListAdapter
 import com.gabrieal.carparkavailabilityapplication.views.base.BaseActivity
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
@@ -38,8 +38,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun onSetupViewModel() {
-        viewModel =
-            ViewModelProviders.of(this, viewModelFactory)[CarParkViewModelImpl::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[CarParkViewModelImpl::class.java]
     }
 
     private fun onBindData() {
