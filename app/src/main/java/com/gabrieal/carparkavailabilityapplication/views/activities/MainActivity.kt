@@ -39,6 +39,7 @@ class MainActivity : BaseActivity() {
     private fun onBindData() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding?.lifecycleOwner = this
+        binding?.carParkViewModel = carParkViewModel
 
         callViewModel()
     }
@@ -53,6 +54,7 @@ class MainActivity : BaseActivity() {
                 Constants.CONST_yyyymmddhhmmss_FORMAT, Locale.getDefault()
             ).format(Date())
         )
+
         loopViewModelCall()
     }
 
@@ -100,12 +102,6 @@ class MainActivity : BaseActivity() {
         carParkViewModel.observeCarParkAvailability().observe(this) {
             it?.let {
                 setupAdapter(it)
-            }
-        }
-
-        carParkViewModel.observeTimeStamp().observe(this) {
-            it?.let {
-                binding?.tvRefreshedAt?.text = it
             }
         }
     }

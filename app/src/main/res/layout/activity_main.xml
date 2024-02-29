@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+        <variable
+            name="carParkViewModel"
+            type="com.gabrieal.carparkavailabilityapplication.viewModels.carPark.CarParkViewModelImpl" />
+    </data>
+
     <LinearLayout
         android:id="@+id/rlLevelRoot"
         android:layout_width="match_parent"
@@ -16,6 +22,7 @@
             android:padding="8dp"
             android:layout_margin="8dp"
             android:maxLines="100"
+            android:text="@{viewmodel.observeTimeStamp()}"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
