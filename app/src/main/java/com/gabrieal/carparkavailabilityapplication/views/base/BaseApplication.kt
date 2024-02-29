@@ -1,26 +1,18 @@
 package com.gabrieal.carparkavailabilityapplication.views.base
 
 import android.app.Application
-import com.gabrieal.carparkavailabilityapplication.di.AppInjector
-import com.gabrieal.carparkavailabilityapplication.di.components.ApplicationComponent
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import javax.inject.Inject
+import com.gabrieal.carparkavailabilityapplication.di.module.appModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
-class BaseApplication : Application(), HasAndroidInjector {
-    @Inject
-    lateinit var appComponent: ApplicationComponent
-
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        AppInjector.init(this)
-    }
 
-    override fun androidInjector(): AndroidInjector<Any> {
-        return dispatchingAndroidInjector
+        startKoin {
+            androidContext(this@BaseApplication)
+            modules(listOf(appModule))
+        }
     }
 }

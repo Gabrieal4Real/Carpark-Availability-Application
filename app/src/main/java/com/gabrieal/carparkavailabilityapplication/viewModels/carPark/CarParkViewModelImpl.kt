@@ -7,24 +7,28 @@ import androidx.lifecycle.ViewModel
 import com.gabrieal.carparkavailabilityapplication.models.carpark.CarParkAvailabilityListModel
 import com.gabrieal.carparkavailabilityapplication.models.carpark.CarParkDataItemModel
 import com.gabrieal.carparkavailabilityapplication.network.api.Resource
-import com.gabrieal.carparkavailabilityapplication.network.api.Resource.Status.*
+import com.gabrieal.carparkavailabilityapplication.network.api.Resource.Status.ERROR
+import com.gabrieal.carparkavailabilityapplication.network.api.Resource.Status.LOADING
+import com.gabrieal.carparkavailabilityapplication.network.api.Resource.Status.SUCCESS
 import com.gabrieal.carparkavailabilityapplication.network.api.ResourceError
 import com.gabrieal.carparkavailabilityapplication.repository.CarParkRepository
 import com.gabrieal.carparkavailabilityapplication.utils.Constants
 import java.text.SimpleDateFormat
-import java.util.*
-import javax.inject.Inject
+import java.util.Locale
 
-class CarParkViewModelImpl @Inject constructor(private val carParkRepository: CarParkRepository) :
-    ViewModel(), CarParkViewModel {
+class CarParkViewModelImpl(private val carParkRepository: CarParkRepository) : ViewModel(),
+    CarParkViewModel {
 
     private val carParkLiveData = MutableLiveData<List<CarParkDataItemModel>?>()
     private val timeStampLiveData = MutableLiveData<String?>()
     private val isLoading = MutableLiveData<Boolean>()
     private val isError = MutableLiveData<ResourceError?>()
 
-    private val fetchCarParkAvailabilityObserver: Observer<Resource<CarParkAvailabilityListModel>> =
-        Observer { t -> processCarParkAvailabilityResponse(t) }
+    private val fetchCarParkAvailabilityObserver: Observer<Resource<CarParkAvailabilityListModel>> = Observer { t ->
+        processCarParkAvailabilityResponse(
+            t
+        )
+    }
 
     override fun getCarParkAvailability(dateTime: String) {
         carParkRepository.getCarParkListFromAPI(dateTime)

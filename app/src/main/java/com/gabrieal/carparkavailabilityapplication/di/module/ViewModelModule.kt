@@ -1,23 +1,15 @@
 package com.gabrieal.carparkavailabilityapplication.di.module
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.gabrieal.carparkavailabilityapplication.di.ViewModelKey
-import com.gabrieal.carparkavailabilityapplication.di.factory.ViewModelFactory
+import com.gabrieal.carparkavailabilityapplication.network.http.BaseHttpClient
+import com.gabrieal.carparkavailabilityapplication.network.http.HttpClient
+import com.gabrieal.carparkavailabilityapplication.repository.CarParkRepository
+import com.gabrieal.carparkavailabilityapplication.repository.CarParkRepositoryImpl
 import com.gabrieal.carparkavailabilityapplication.viewModels.carPark.CarParkViewModelImpl
-import dagger.Binds
-import dagger.Module
-import dagger.multibindings.IntoMap
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 
-@Suppress("unused")
-@Module
-abstract class ViewModelModule {
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(CarParkViewModelImpl::class)
-    abstract fun bindCarParkAvailabilityImpl(carParkViewModelImpl: CarParkViewModelImpl): ViewModel
-
-    @Binds
-    abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+val appModule = module {
+    single<HttpClient> { BaseHttpClient() }
+    single<CarParkRepository> { CarParkRepositoryImpl(get()) }
+    viewModel { CarParkViewModelImpl(get()) }
 }

@@ -46,7 +46,6 @@ class BaseHttpClient : HttpClient {
         return newAPIService
     }
 
-
     override fun getNewRetrofit(): Retrofit {
         return newRetrofit
     }

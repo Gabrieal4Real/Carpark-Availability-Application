@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gabrieal.carparkavailabilityapplication.R
 import com.gabrieal.carparkavailabilityapplication.databinding.ActivityMainBinding
@@ -13,21 +12,17 @@ import com.gabrieal.carparkavailabilityapplication.models.carpark.CarParkDataIte
 import com.gabrieal.carparkavailabilityapplication.models.dataModels.CarParkCategoryItemModel
 import com.gabrieal.carparkavailabilityapplication.models.dataModels.CarParkCategoryModel
 import com.gabrieal.carparkavailabilityapplication.utils.Constants
-import com.gabrieal.carparkavailabilityapplication.viewModels.carPark.CarParkViewModel
 import com.gabrieal.carparkavailabilityapplication.viewModels.carPark.CarParkViewModelImpl
 import com.gabrieal.carparkavailabilityapplication.views.adapters.CarParkListAdapter
 import com.gabrieal.carparkavailabilityapplication.views.base.BaseActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
     private var binding: ActivityMainBinding? = null
-    private lateinit var viewModel: CarParkViewModel
+    private val carParkViewModel: CarParkViewModelImpl by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +33,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun onSetupViewModel() {
-        viewModel = ViewModelProvider(this, viewModelFactory)[CarParkViewModelImpl::class.java]
+
     }
 
     private fun onBindData() {
@@ -53,7 +48,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun callViewModel() {
-        viewModel.getCarParkAvailability(
+        carParkViewModel.getCarParkAvailability(
             SimpleDateFormat(
                 Constants.CONST_yyyymmddhhmmss_FORMAT, Locale.getDefault()
             ).format(Date())
@@ -62,6 +57,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupUI() {
+
     }
 
     private fun setupAdapter(results: List<CarParkDataItemModel>?) {
@@ -102,13 +98,13 @@ class MainActivity : BaseActivity() {
     }
 
     private fun observeResponses() {
-        viewModel.observeCarParkAvailability().observe(this) {
+        carParkViewModel.observeCarParkAvailability().observe(this) {
             it?.let {
                 setupAdapter(it)
             }
         }
 
-        viewModel.observeTimeStamp().observe(this) {
+        carParkViewModel.observeTimeStamp().observe(this) {
             it?.let {
                 binding?.tvRefreshedAt?.text = it
             }
